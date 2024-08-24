@@ -1,4 +1,5 @@
 ﻿using ZombieDice;
+using ZombieDice.Dice;
 
 var greenDie = new ZombieD6Green();
 var yellowDie = new ZombieD6Yellow();

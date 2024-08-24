@@ -1,8 +1,10 @@
+using ZombieDice.Dice;
+
 namespace ZombieDice;
 
 public class DiceRoller
 {
-    public DieFace Roll(IZombieD6 die)
+    public ZombieDieFace Roll(IZombieDie die)
     {
         var rand = new Random();
         var faces = die.GetFaces();
