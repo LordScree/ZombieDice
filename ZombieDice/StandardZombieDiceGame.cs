@@ -24,19 +24,19 @@ public class StandardZombieDiceGame : IZombieDiceGame
         _roller = roller;
 
         _zombieDice = [
-            new ZombieD6Green(),
-            new ZombieD6Green(),
-            new ZombieD6Green(),
-            new ZombieD6Green(),
-            new ZombieD6Green(),
-            new ZombieD6Green(),
-            new ZombieD6Yellow(),
-            new ZombieD6Yellow(),
-            new ZombieD6Yellow(),
-            new ZombieD6Yellow(),
-            new ZombieD6Red(),
-            new ZombieD6Red(),
-            new ZombieD6Red()
+            new GreenD6(),
+            new GreenD6(),
+            new GreenD6(),
+            new GreenD6(),
+            new GreenD6(),
+            new GreenD6(),
+            new YellowD6(),
+            new YellowD6(),
+            new YellowD6(),
+            new YellowD6(),
+            new RedD6(),
+            new RedD6(),
+            new RedD6()
         ];
 
         _bag = new DiceBag(_zombieDice);
@@ -47,12 +47,21 @@ public class StandardZombieDiceGame : IZombieDiceGame
         _bag = new DiceBag(_zombieDice);
     }
 
-    public void StartTurn()
+    public ZombieDieFace[] StartTurn()
     {
         EndTurn = false;
         ResetDiceBag();
         PlayedDice = new List<PlayedDie>();
         _currentHand = _bag.GrabZombieDice(3);
+        return RollHand();
+    }
+
+    public ZombieDieFace[] GoAgain()
+    {
+        if (EndTurn) throw new TurnAlreadyOverException();
+
+        _currentHand.AddRange(_bag.GrabZombieDice(_currentHand.Count() - 3));
+        return RollHand();
     }
 
     public ZombieDieType[] InspectHand()
@@ -75,7 +84,7 @@ public class StandardZombieDiceGame : IZombieDiceGame
         return result.ToArray();
     }
 
-    public ZombieDieFace[] RollHand()
+    private ZombieDieFace[] RollHand()
     {
         if (EndTurn) throw new TurnAlreadyOverException();
 

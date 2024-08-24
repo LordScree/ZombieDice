@@ -1,5 +1,5 @@
 namespace ZombieDice.Dice;
-public class ZombieD6Green : IZombieDie
+public class GreenD6 : IZombieDie
 {
     public ZombieDieType GetZombieDieType()
     {
