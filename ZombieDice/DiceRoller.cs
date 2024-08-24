@@ -8,6 +8,7 @@ public class DiceRoller
     {
         var rand = new Random();
         var faces = die.GetFaces();
-        return faces[rand.Next(faces.Length)];
+        die.LastFace = faces[rand.Next(faces.Length)];
+        return die.LastFace;
     }
 }

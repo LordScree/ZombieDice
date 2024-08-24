@@ -18,4 +18,6 @@ public interface IZombieDie
     ZombieDieFace[] GetFaces();
 
     ZombieDieType GetZombieDieType();
+
+    ZombieDieFace LastFace { get; set; }
 }

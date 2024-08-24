@@ -9,4 +9,6 @@ public class GreenD6 : IZombieDie
     {
         return [ZombieDieFace.Brain, ZombieDieFace.Brain, ZombieDieFace.Brain, ZombieDieFace.Runner, ZombieDieFace.Runner, ZombieDieFace.Shotgun];
     }
+
+    public ZombieDieFace LastFace { get; set; }
 }

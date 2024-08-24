@@ -27,7 +27,7 @@ public class DiceBag
         var rand = new Random();
         int index;
 
-        for (int i = 0; i <= howMany; i++)
+        for (int i = 0; i < howMany; i++)
         {
             index = rand.Next(_dice.Count());
             diceToReturn.Add(_dice[index]);

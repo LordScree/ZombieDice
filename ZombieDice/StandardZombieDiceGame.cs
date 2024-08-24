@@ -47,21 +47,25 @@ public class StandardZombieDiceGame : IZombieDiceGame
         _bag = new DiceBag(_zombieDice);
     }
 
-    public ZombieDieFace[] StartTurn()
+    public PlayedDie[] StartTurn()
     {
         EndTurn = false;
         ResetDiceBag();
         PlayedDice = new List<PlayedDie>();
         _currentHand = _bag.GrabZombieDice(3);
-        return RollHand();
+        var rollResult = RollHand();
+        CleanupCurrentHand();
+        return rollResult;
     }
 
-    public ZombieDieFace[] GoAgain()
+    public PlayedDie[] GoAgain()
     {
         if (EndTurn) throw new TurnAlreadyOverException();
 
         _currentHand.AddRange(_bag.GrabZombieDice(_currentHand.Count() - 3));
-        return RollHand();
+        var rollResult = RollHand();
+        CleanupCurrentHand();
+        return rollResult;
     }
 
     public ZombieDieType[] InspectHand()
@@ -84,11 +88,11 @@ public class StandardZombieDiceGame : IZombieDiceGame
         return result.ToArray();
     }
 
-    private ZombieDieFace[] RollHand()
+    private PlayedDie[] RollHand()
     {
         if (EndTurn) throw new TurnAlreadyOverException();
 
-        var result = new List<ZombieDieFace>();
+        var result = new List<PlayedDie>();
 
         foreach (var die in _currentHand)
         {
@@ -98,7 +102,7 @@ public class StandardZombieDiceGame : IZombieDiceGame
         return result.ToArray();
     }
 
-    private ZombieDieFace ResolveRoll(IZombieDie die)
+    private PlayedDie ResolveRoll(IZombieDie die)
     {
         var currentFace = _roller.Roll(die);
 
@@ -106,20 +110,24 @@ public class StandardZombieDiceGame : IZombieDiceGame
         {
             case ZombieDieFace.Brain:
                 Brains++;
-                _currentHand.Remove(die);
                 break;
             case ZombieDieFace.Runner:
                 break;
             case ZombieDieFace.Shotgun:
                 Shotguns++;
                 CheckForEndTurnCondition();
-                _currentHand.Remove(die);
                 break;
         }
 
-        PlayedDice.Add(new PlayedDie(die.GetZombieDieType(), currentFace));
+        var result = new PlayedDie(die.GetZombieDieType(), currentFace);
+        PlayedDice.Add(result);
 
-        return currentFace;
+        return result;
+    }
+
+    private void CleanupCurrentHand()
+    {
+        _currentHand.RemoveAll(x => x.LastFace == ZombieDieFace.Brain || x.LastFace == ZombieDieFace.Shotgun);
     }
 
     private void CheckForEndTurnCondition()
