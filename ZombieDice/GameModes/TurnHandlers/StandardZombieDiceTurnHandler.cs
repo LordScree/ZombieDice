@@ -40,22 +40,34 @@ namespace LordScree.ZombieDice.GameModes.TurnHandlers
             return PlayedDice.ToArray();
         }
 
+        public int GetTotalDiceCount()
+        {
+            return _game.GetTotalDiceCount();
+        }
+
         public PlayedDie[] StartTurn()
         {
-            EndTurn = false;
-            _game.ResetDiceBag();
-            PlayedDice = new List<PlayedDie>();
+            ResetTurn();
             _currentHand = _game.GrabZombieDice(3);
             var rollResult = RollHand();
             CleanupCurrentHand();
             return rollResult;
         }
 
+        private void ResetTurn()
+        {
+            Brains = 0;
+            Shotguns = 0;
+            EndTurn = false;
+            _game.ResetDiceBag();
+            PlayedDice = new List<PlayedDie>();
+        }
+
         public PlayedDie[] GoAgain()
         {
             if (EndTurn) throw new TurnAlreadyOverException();
 
-            _currentHand.AddRange(_game.GrabZombieDice(_currentHand.Count - 3));
+            _currentHand.AddRange(_game.GrabZombieDice(3 - _currentHand.Count));
             var rollResult = RollHand();
             CleanupCurrentHand();
             return rollResult;

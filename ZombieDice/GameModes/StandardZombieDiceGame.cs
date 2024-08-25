@@ -5,7 +5,7 @@ namespace LordScree.ZombieDice.GameModes;
 
 public class StandardZombieDiceGame : IZombieDiceGame
 {
-    private List<IZombieDie> Dice { get; set; } = [];
+    private IZombieDie[] Dice { get; set; } = [];
     private DiceBag Bag { get; set; }
 
     public StandardZombieDiceGame()
@@ -42,6 +42,11 @@ public class StandardZombieDiceGame : IZombieDiceGame
     public IZombieDiceTurnHandler GetTurnHandler(DiceRoller roller)
     {
         return new StandardZombieDiceTurnHandler(this, roller);
+    }
+
+    public int GetTotalDiceCount()
+    {
+        return Dice.Length;
     }
 
 }

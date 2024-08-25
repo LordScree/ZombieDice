@@ -1,32 +1,77 @@
-﻿using LordScree.ZombieDice;
+﻿using LordScree.InteractionHandlers;
+using LordScree.ZombieDice;
 using LordScree.ZombieDice.Dice;
 using LordScree.ZombieDice.GameModes;
+using System.Runtime;
 
 var game = new StandardZombieDiceGame();
 var roller = new DiceRoller();
 var turnHandler = game.GetTurnHandler(roller);
-var gameState = new GameState(turnHandler, ["Scree", "Nilly"]);
-
+var gameState = new GameState(turnHandler, ["Tini", "Dard"]);
 var player = gameState.GetCurrentPlayer();
+
+var consoleHandler = new ConsoleInteractionHandler();
+consoleHandler.PrintHelp();
+
 Console.WriteLine($"Current Player: {player.PlayerName}");
-var playedDice = turnHandler.StartTurn();
 
-PrintResult(playedDice, turnHandler.GetCurrentPlayedDice(), turnHandler.HasTurnEnded());
+string input = String.Empty;
+PlayedDie[] playedDice = [];
 
-static void PrintResult(PlayedDie[] rollResult, PlayedDie[] allPlayedDice, bool endOfTurn)
+bool done = false;
+
+while (!done)
 {
-    Console.WriteLine($"You rolled {rollResult.Length} zombie dice!");
-    for (int i = 0; i < rollResult.Length; i++)
+    // Check game state at the start of the loop.
+    done = gameState.HasGameEnded();
+    input = consoleHandler.ReadPlayerInput("What would you like to do?");
+    if (consoleHandler.IsVerb(input))
     {
-        Console.WriteLine($"Die {i + 1} ({rollResult[i].Type}): {rollResult[i].Face}");
-    }
-
-    if (endOfTurn)
-    {
-        Console.WriteLine("You have been shot! It is the end of your turn.");
+        switch (input.ToLower())
+        {
+            case "start":
+                consoleHandler.PrintRollResult(turnHandler.StartTurn(), turnHandler.HasTurnEnded());
+                break;
+            case "inspect":
+                consoleHandler.PrintDiceInspection(turnHandler);
+                break;
+            case "again":
+                consoleHandler.PrintRollResult(turnHandler.GoAgain(), turnHandler.HasTurnEnded());
+                break;
+            case "bank":
+                consoleHandler.PrintBrainBank(turnHandler.BankBrains(player));
+                HandleEndTurn();
+                break;
+            case "end":
+                HandleEndTurn();
+                break;
+            case "quit":
+                if (consoleHandler.QuitConfirm())
+                {
+                    done = true;
+                }
+                break;
+            case "help":
+                consoleHandler.PrintHelp();
+                break;
+        }
     }
     else
     {
-        Console.WriteLine("You can continue to eat more brains if you wish!");
+        consoleHandler.PrintInvalidInputMessage(input);
+    }
+}
+
+void HandleEndTurn()
+{
+    consoleHandler.PrintEndOfTurn(player);
+    if (gameState.HasGameEnded())
+    {
+        consoleHandler.PrintGameEndSummary(gameState);
+    }
+    else
+    {
+        player = gameState.NextPlayer();
+        consoleHandler.PrintNextPlayerIntro(player);
     }
 }

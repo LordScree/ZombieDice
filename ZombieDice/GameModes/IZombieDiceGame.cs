@@ -9,4 +9,5 @@ public interface IZombieDiceGame
     List<IZombieDie> GrabZombieDice(int howMany);
 
     IZombieDiceTurnHandler GetTurnHandler(DiceRoller roller);
+    int GetTotalDiceCount();
 }

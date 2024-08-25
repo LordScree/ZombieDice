@@ -6,7 +6,10 @@ public class DiceBag
 {
     private List<IZombieDie> _dice;
 
-    public DiceBag(List<IZombieDie> dice) => _dice = dice;
+    public DiceBag(IZombieDie[] dice)
+    {
+        _dice = new List<IZombieDie>(dice);
+    }
 
     public List<IZombieDie> GrabZombieDice(int howMany = 3)
     {

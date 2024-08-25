@@ -48,7 +48,14 @@ namespace LordScree.ZombieDice
         public ZombieDicePlayer NextPlayer()
         {
             CheckForWinner();
-            CurrentPlayerIndex = CurrentPlayerIndex == Players.Count - 1 ? CurrentPlayerIndex + 1 : 0;
+            if (CurrentPlayerIndex == Players.Count - 1)
+            {
+                CurrentPlayerIndex = 0;
+            }
+            else
+            {
+                CurrentPlayerIndex++;
+            }
             return Players[CurrentPlayerIndex];
         }
 
@@ -68,7 +75,7 @@ namespace LordScree.ZombieDice
         private void CheckForGameEnd()
         {
             // The game ends at the end of the round in which someone has banked enough brains.
-            if (SomeoneHasWon && CurrentPlayerIndex == Players.Count)
+            if (SomeoneHasWon && CurrentPlayerIndex == Players.Count - 1)
             {
                 GameHasEnded = true;
                 ResolveWinners();
@@ -79,7 +86,7 @@ namespace LordScree.ZombieDice
         {
             var highScore = 0;
             List<int> currentWinnerIndexes = [];
-            for(int i=0; i<Players.Count; i++)
+            for (int i = 0; i < Players.Count; i++)
             {
                 if (Players[i].Winner && Players[i].BankedBrains >= highScore)
                 {
