@@ -1,6 +1,6 @@
-using ZombieDice.Dice;
+using LordScree.ZombieDice.Dice;
 
-namespace ZombieDice;
+namespace LordScree.ZombieDice;
 
 public class StandardZombieDiceGame : IZombieDiceGame
 {

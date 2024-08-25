@@ -1,19 +1,16 @@
-using ZombieDice.Dice;
+using LordScree.ZombieDice.Dice;
 
-namespace ZombieDice;
+namespace LordScree.ZombieDice;
 
 public class DiceBag
 {
-    List<IZombieDie> _dice;
+    private List<IZombieDie> _dice;
 
-    public DiceBag(List<IZombieDie> dice)
-    {
-        _dice = dice;
-    }
+    public DiceBag(List<IZombieDie> dice) => _dice = dice;
 
     public List<IZombieDie> GrabZombieDice(int howMany = 3)
     {
-        List<IZombieDie> diceToReturn = new List<IZombieDie>();
+        List<IZombieDie> diceToReturn = [];
 
         // If we have three or fewer left, return those.
         if (_dice.Count() <= howMany)

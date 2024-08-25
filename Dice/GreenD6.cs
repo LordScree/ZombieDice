@@ -1,4 +1,4 @@
-namespace ZombieDice.Dice;
+namespace LordScree.ZombieDice.Dice;
 public class GreenD6 : IZombieDie
 {
     public ZombieDieType GetZombieDieType()

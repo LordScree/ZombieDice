@@ -4,3 +4,4 @@ packages
 Thumbs.db
 *.suo
 *.user
+.vs

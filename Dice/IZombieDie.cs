@@ -1,4 +1,4 @@
-namespace ZombieDice.Dice;
+namespace LordScree.ZombieDice.Dice;
 public enum ZombieDieFace
 {
     Brain,

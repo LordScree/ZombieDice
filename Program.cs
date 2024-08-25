@@ -1,15 +1,5 @@
-﻿using ZombieDice;
-using ZombieDice.Dice;
-
-// var greenDie = new GreenD6();
-// var yellowDie = new YellowD6();
-// var redDie = new RedD6();
-
-// var roller = new DiceRoller();
-
-// Console.WriteLine($"Green: {roller.Roll(greenDie)}");
-// Console.WriteLine($"Yellow: {roller.Roll(yellowDie)}");
-// Console.WriteLine($"Red: {roller.Roll(redDie)}");
+﻿using LordScree.ZombieDice;
+using LordScree.ZombieDice.Dice;
 
 var roller = new DiceRoller();
 var g = new StandardZombieDiceGame(roller);
@@ -17,7 +7,7 @@ var g = new StandardZombieDiceGame(roller);
 var result = g.StartTurn();
 PrintResult(result, g.PlayedDice, g.EndTurn);
 
-void PrintResult(PlayedDie[] rollResult, List<PlayedDie> allPlayedDice, bool endTurn)
+static void PrintResult(PlayedDie[] rollResult, List<PlayedDie> allPlayedDice, bool endTurn)
 {
     Console.WriteLine($"You rolled {rollResult.Length} zombie dice!");
     for (int i = 0; i < rollResult.Length; i++)

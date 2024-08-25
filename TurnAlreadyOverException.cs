@@ -1,4 +1,4 @@
-namespace ZombieDice;
+namespace LordScree.ZombieDice;
 
 [System.Serializable]
 public class TurnAlreadyOverException : System.Exception
