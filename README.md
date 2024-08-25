@@ -1,5 +1,8 @@
-# zombie-dice
-A .NET8 C# implementation of the dice game Zombie Dice
+# LordScree's Zombie Dice
+A .NET8 C# implementation of the dice game Zombie Dice by Steve Jackson.
+I don't own any rights to Zombie Dice or the mechanics of this game.
+See the following Wikipedia article for original rules: [https://en.wikipedia.org/wiki/Zombie_Dice](https://en.wikipedia.org/wiki/Zombie_Dice)
+This console variant probably differs slightly from the original.
 
 # Why?
 I played this game last night with some mates. Enjoyed it. Was inspired to have
