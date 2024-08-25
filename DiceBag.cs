@@ -13,10 +13,10 @@ public class DiceBag
         List<IZombieDie> diceToReturn = [];
 
         // If we have three or fewer left, return those.
-        if (_dice.Count() <= howMany)
+        if (_dice.Count <= howMany)
         {
             diceToReturn.AddRange(_dice);
-            _dice.RemoveRange(0, _dice.Count() - 1);
+            _dice.RemoveRange(0, _dice.Count - 1);
             return diceToReturn;
         }
 
@@ -26,7 +26,7 @@ public class DiceBag
 
         for (int i = 0; i < howMany; i++)
         {
-            index = rand.Next(_dice.Count());
+            index = rand.Next(_dice.Count);
             diceToReturn.Add(_dice[index]);
             _dice.RemoveAt(index);
         }

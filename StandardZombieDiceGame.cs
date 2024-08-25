@@ -62,7 +62,7 @@ public class StandardZombieDiceGame : IZombieDiceGame
     {
         if (EndTurn) throw new TurnAlreadyOverException();
 
-        _currentHand.AddRange(_bag.GrabZombieDice(_currentHand.Count() - 3));
+        _currentHand.AddRange(_bag.GrabZombieDice(_currentHand.Count - 3));
         var rollResult = RollHand();
         CleanupCurrentHand();
         return rollResult;
