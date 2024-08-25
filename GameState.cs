@@ -1,6 +1,6 @@
 ﻿using LordScree.ZombieDice;
 
-namespace zombie_dice.ZombieDice
+namespace LordScree.ZombieDice
 {
     internal class GameState
     {
