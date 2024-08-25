@@ -23,6 +23,7 @@ namespace LordScree.ZombieDice.GameModes.TurnHandlers
         {
             _game = game;
             _roller = roller;
+            ResetTurn();
         }
 
         public int GetCurrentBrains()
@@ -45,15 +46,6 @@ namespace LordScree.ZombieDice.GameModes.TurnHandlers
             return _game.GetTotalDiceCount();
         }
 
-        public PlayedDie[] StartTurn()
-        {
-            ResetTurn();
-            _currentHand = _game.GrabZombieDice(3);
-            var rollResult = RollHand();
-            CleanupCurrentHand();
-            return rollResult;
-        }
-
         private void ResetTurn()
         {
             Brains = 0;
@@ -63,7 +55,7 @@ namespace LordScree.ZombieDice.GameModes.TurnHandlers
             PlayedDice = new List<PlayedDie>();
         }
 
-        public PlayedDie[] GoAgain()
+        public PlayedDie[] RollZombieDice()
         {
             if (EndTurn) throw new TurnAlreadyOverException();
 

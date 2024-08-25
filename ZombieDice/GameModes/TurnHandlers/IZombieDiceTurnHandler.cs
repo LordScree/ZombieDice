@@ -4,8 +4,7 @@ namespace LordScree.ZombieDice.GameModes.TurnHandlers
 {
     public interface IZombieDiceTurnHandler
     {
-        PlayedDie[] StartTurn();
-        PlayedDie[] GoAgain();
+        PlayedDie[] RollZombieDice();
         ZombieDieType[] InspectHand();
         ZombieDieType[] InspectPlayedDice();
         int GetCurrentBrains();

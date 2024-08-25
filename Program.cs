@@ -2,12 +2,13 @@
 using LordScree.ZombieDice;
 using LordScree.ZombieDice.Dice;
 using LordScree.ZombieDice.GameModes;
+using System.Net.Security;
 using System.Runtime;
 
 var game = new StandardZombieDiceGame();
 var roller = new DiceRoller();
 var turnHandler = game.GetTurnHandler(roller);
-var gameState = new GameState(turnHandler, ["Tini", "Dard"]);
+var gameState = new GameState(turnHandler, ["Lizzie", "Tini", "Mum", "Dard"]);
 var player = gameState.GetCurrentPlayer();
 
 var consoleHandler = new ConsoleInteractionHandler();
@@ -19,6 +20,7 @@ string input = String.Empty;
 PlayedDie[] playedDice = [];
 
 bool done = false;
+bool hasTurnEnded = false;
 
 while (!done)
 {
@@ -29,20 +31,16 @@ while (!done)
     {
         switch (input.ToLower())
         {
-            case "start":
-                consoleHandler.PrintRollResult(turnHandler.StartTurn(), turnHandler.HasTurnEnded());
+            case "roll":
+                hasTurnEnded = turnHandler.HasTurnEnded();
+                consoleHandler.PrintRollResult(turnHandler.RollZombieDice(), hasTurnEnded);
+                if (hasTurnEnded) HandleEndTurn();
                 break;
             case "inspect":
                 consoleHandler.PrintDiceInspection(turnHandler);
                 break;
-            case "again":
-                consoleHandler.PrintRollResult(turnHandler.GoAgain(), turnHandler.HasTurnEnded());
-                break;
             case "bank":
                 consoleHandler.PrintBrainBank(turnHandler.BankBrains(player));
-                HandleEndTurn();
-                break;
-            case "end":
                 HandleEndTurn();
                 break;
             case "quit":
@@ -60,6 +58,8 @@ while (!done)
     {
         consoleHandler.PrintInvalidInputMessage(input);
     }
+
+    if (gameState.HasGameEnded()) { done = true; }
 }
 
 void HandleEndTurn()

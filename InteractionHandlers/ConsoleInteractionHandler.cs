@@ -7,26 +7,58 @@ namespace LordScree.InteractionHandlers
 {
     public class ConsoleInteractionHandler
     {
-        private string[] Verbs { get; set; } = ["Start", "Inspect", "Again", "Bank", "End", "Help", "Quit"];
-        public string[] GetSupportedVerbs()
-        {
-            return Verbs;
-        }
+        private Dictionary<string, string> Actions { get; set; } = new Dictionary<string, string>() {
+            {"Roll", "Reach into the bag and roll some zombie dice!"}, 
+            {"Inspect", "View a summary of the dice you have already played this turn."},
+            {"Bank", "Bank your brains and hand over to the next player."},
+            {"Help", "Print this help."}, {"Quit", "Exit the game."}
+         };
 
         private string GetHelp()
         {
             var help = new StringBuilder();
-            help.AppendLine("Welcome to LordScree's Zombie Dice game.");
-            help.AppendLine("A .NET8 variant of the classic Steve Jackson game.");
             help.AppendLine();
-            help.AppendLine($"The following verbs are supported: {string.Join(", ", Verbs)}");
-            help.AppendLine("Start: Start your turn.");
-            help.AppendLine("Inspect: Inspect the dice you have already played.");
-            help.AppendLine("Again: Go again (reach back into the bag and roll more dice!)");
-            help.AppendLine("Bank: Bank your brains.");
-            help.AppendLine("End: End your turn and hand the bag to the next player.");
-            help.AppendLine("Help: Print this help.");
-            help.AppendLine("Quit: Exit the game.");
+            help.AppendLine("**************************************************");
+            help.AppendLine("     Welcome to LordScree's Zombie Dice game.     ");
+            help.AppendLine("A .NET8 variant of the classic Steve Jackson game.");
+            help.AppendLine("**************************************************");
+            help.AppendLine();
+            help.AppendLine("Rules");
+            help.AppendLine("--------------------------------------------------");
+            help.AppendLine("Zombie Dice is a simple dice-rolling game of chance and pushing your luck.");
+            help.AppendLine("On your turn, you will pick three dice out of a bag and 'roll' them.");
+            help.AppendLine("Each die has six sides, with chances of either a Brain (good) a Shotgun (bad) or a Runner (re-roll).");
+            help.AppendLine("(Details of dice variants below)");
+            help.AppendLine();
+            help.AppendLine("You can 'bank' your brains at any point to end your turn and pass to the next player. Banked brains are safe and accumulate across multiple turns.");
+            help.AppendLine("The game ends at the end of the round in which a player has banked 13 or more brains. The winner is then the player with the most banked brains. Ties are shared (zombies are used to sharing things).");
+            help.AppendLine();
+            help.AppendLine("If you ever have 3 Shotguns on your turn, you end your turn and play passes to the next player. You lose any unbanked brains.");
+            help.AppendLine();
+            help.AppendLine("You can 'roll' as many times as you like on your turn. Each time you 'roll', any previously-rolled Brains or Shotguns will be set aside and any Runners will be re-rolled.");
+            help.AppendLine();
+            help.AppendLine("In this way, the number of Shotguns and Brains accumulate on your turn, until you either bank your Brains or you are shot too many times.");
+            help.AppendLine();
+            help.AppendLine("Dice variants");
+            help.AppendLine("--------------------------------------------------");
+            help.AppendLine("There is a bag of 13 zombie dice: 6 green dice, 4 yellow dice and 3 red dice.");
+            help.AppendLine("Green dice have 3 brains, 2 runners and 1 shotgun.");
+            help.AppendLine("Yellow dice have 2 each of brains, runners and shotguns.");
+            help.AppendLine("Red dice have 1 brain, 2 runners and 3 shotguns (these are bad!).");
+            help.AppendLine();
+            help.AppendLine("Actions (how to play in the console)");
+            help.AppendLine("--------------------------------------------------");
+            help.AppendLine("This is a console-based game. To play, you need to type an action and then press return.");
+            help.AppendLine("(actions are case-insensitive)");
+            help.AppendLine();
+            help.AppendLine($"The following actions are supported: {string.Join(", ", Actions.Select(x => x.Key))}");
+
+            foreach(var a in Actions)
+            {
+                help.AppendLine($"{a.Key}\t\t{a.Value}");
+            }
+
+            help.AppendLine();
             return help.ToString();
         }
 
@@ -81,7 +113,7 @@ namespace LordScree.InteractionHandlers
         {
             var result = new StringBuilder();
 
-            result.AppendLine($"You have ended your turn with {zombieDicePlayer.BankedBrains} banked brains.");
+            result.AppendLine($"{zombieDicePlayer.PlayerName} has ended their turn with {zombieDicePlayer.BankedBrains} banked brains.");
 
             if (zombieDicePlayer.Winner)
             {
@@ -141,7 +173,7 @@ namespace LordScree.InteractionHandlers
 
         public bool IsVerb(string verb)
         {
-            return Verbs.Contains(verb, StringComparer.OrdinalIgnoreCase);
+            return Actions.Keys.Contains(verb, StringComparer.OrdinalIgnoreCase);
         }
 
         internal void PrintBrainBank(int playerTotalBankedBrains)
