@@ -1,4 +1,4 @@
-﻿using LordScree.ZombieDice;
+﻿using LordScree.ZombieDice.GameModes.TurnHandlers;
 
 namespace LordScree.ZombieDice
 {

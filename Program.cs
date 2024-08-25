@@ -1,5 +1,6 @@
 ﻿using LordScree.ZombieDice;
 using LordScree.ZombieDice.Dice;
+using LordScree.ZombieDice.GameModes;
 
 var game = new StandardZombieDiceGame();
 var roller = new DiceRoller();

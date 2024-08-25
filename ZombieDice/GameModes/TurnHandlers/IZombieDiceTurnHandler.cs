@@ -1,6 +1,6 @@
 ﻿using LordScree.ZombieDice.Dice;
 
-namespace LordScree.ZombieDice
+namespace LordScree.ZombieDice.GameModes.TurnHandlers
 {
     public interface IZombieDiceTurnHandler
     {
