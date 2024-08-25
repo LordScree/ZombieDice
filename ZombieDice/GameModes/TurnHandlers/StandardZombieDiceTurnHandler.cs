@@ -46,13 +46,13 @@ namespace LordScree.ZombieDice.GameModes.TurnHandlers
             return _game.GetTotalDiceCount();
         }
 
-        private void ResetTurn()
+        public void ResetTurn()
         {
             Brains = 0;
             Shotguns = 0;
             EndTurn = false;
             _game.ResetDiceBag();
-            PlayedDice = new List<PlayedDie>();
+            PlayedDice = [];
         }
 
         public PlayedDie[] RollZombieDice()

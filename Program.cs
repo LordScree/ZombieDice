@@ -8,7 +8,7 @@ using System.Runtime;
 var game = new StandardZombieDiceGame();
 var roller = new DiceRoller();
 var turnHandler = game.GetTurnHandler(roller);
-var gameState = new GameState(turnHandler, ["Lizzie", "Tini", "Mum", "Dard"]);
+var gameState = new GameState(turnHandler, ["Lizzie", "Tini", "Dard"]);
 var player = gameState.GetCurrentPlayer();
 
 var consoleHandler = new ConsoleInteractionHandler();
@@ -20,7 +20,6 @@ string input = String.Empty;
 PlayedDie[] playedDice = [];
 
 bool done = false;
-bool hasTurnEnded = false;
 
 while (!done)
 {
@@ -32,9 +31,8 @@ while (!done)
         switch (input.ToLower())
         {
             case "roll":
-                hasTurnEnded = turnHandler.HasTurnEnded();
-                consoleHandler.PrintRollResult(turnHandler.RollZombieDice(), hasTurnEnded);
-                if (hasTurnEnded) HandleEndTurn();
+                consoleHandler.PrintRollResult(turnHandler.RollZombieDice(), turnHandler.HasTurnEnded());
+                if (turnHandler.HasTurnEnded()) HandleEndTurn();
                 break;
             case "inspect":
                 consoleHandler.PrintDiceInspection(turnHandler);

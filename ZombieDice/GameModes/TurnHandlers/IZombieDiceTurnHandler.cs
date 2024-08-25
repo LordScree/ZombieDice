@@ -13,5 +13,6 @@ namespace LordScree.ZombieDice.GameModes.TurnHandlers
         int BankBrains(ZombieDicePlayer player);
         bool HasTurnEnded();
         int GetTotalDiceCount();
+        void ResetTurn();
     }
 }

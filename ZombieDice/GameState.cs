@@ -56,6 +56,7 @@ namespace LordScree.ZombieDice
             {
                 CurrentPlayerIndex++;
             }
+            TurnHandler.ResetTurn();
             return Players[CurrentPlayerIndex];
         }
 
