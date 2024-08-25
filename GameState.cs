@@ -4,6 +4,7 @@ namespace LordScree.ZombieDice
 {
     internal class GameState
     {
+        private IZombieDiceTurnHandler TurnHandler { get; set; }
         public static int TargetBrains { get; set; } = 13;
         public List<ZombieDicePlayer> Players { get; set; } = [];
 
@@ -15,16 +16,18 @@ namespace LordScree.ZombieDice
 
         private int[] WinningPlayerIndexes { get; set; } = [];
 
-        public GameState(int numberOfPlayers)
+        public GameState(IZombieDiceTurnHandler turnHandler, int numberOfPlayers)
         {
+            TurnHandler = turnHandler;
             for (int i = 0; i < numberOfPlayers; i++)
             {
                 Players.Add(ZombieDicePlayer.GetPlayer($"Player {i + 1}"));
             }
         }
 
-        public GameState(string[] playerNames)
+        public GameState(IZombieDiceTurnHandler turnHandler, string[] playerNames)
         {
+            TurnHandler = turnHandler;
             foreach (string playerName in playerNames)
             {
                 Players.Add(ZombieDicePlayer.GetPlayer(playerName));

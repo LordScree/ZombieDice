@@ -7,7 +7,7 @@ namespace LordScree.ZombieDice
         public string PlayerName { get; set; }
         public bool Winner { get; private set; } = false;
 
-        public void BankBrains(int brainsToBank)
+        public int BankBrains(int brainsToBank)
         {
             // Winners cannot bank more brains.
             if (!Winner)
@@ -15,6 +15,7 @@ namespace LordScree.ZombieDice
                 BankedBrains += brainsToBank;
                 Winner = BankedBrains >= GameState.TargetBrains;
             }
+            return BankedBrains;
         }
 
         public ZombieDicePlayer(string name) => PlayerName = name;

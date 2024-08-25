@@ -1,13 +1,18 @@
 ﻿using LordScree.ZombieDice;
 using LordScree.ZombieDice.Dice;
 
+var game = new StandardZombieDiceGame();
 var roller = new DiceRoller();
-var g = new StandardZombieDiceGame(roller);
+var turnHandler = game.GetTurnHandler(roller);
+var gameState = new GameState(turnHandler, ["Scree", "Nilly"]);
 
-var result = g.StartTurn();
-PrintResult(result, g.PlayedDice, g.EndTurn);
+var player = gameState.GetCurrentPlayer();
+Console.WriteLine($"Current Player: {player.PlayerName}");
+var playedDice = turnHandler.StartTurn();
 
-static void PrintResult(PlayedDie[] rollResult, List<PlayedDie> allPlayedDice, bool endTurn)
+PrintResult(playedDice, turnHandler.GetCurrentPlayedDice(), turnHandler.HasTurnEnded());
+
+static void PrintResult(PlayedDie[] rollResult, PlayedDie[] allPlayedDice, bool endOfTurn)
 {
     Console.WriteLine($"You rolled {rollResult.Length} zombie dice!");
     for (int i = 0; i < rollResult.Length; i++)
@@ -15,7 +20,7 @@ static void PrintResult(PlayedDie[] rollResult, List<PlayedDie> allPlayedDice, b
         Console.WriteLine($"Die {i + 1} ({rollResult[i].Type}): {rollResult[i].Face}");
     }
 
-    if (endTurn)
+    if (endOfTurn)
     {
         Console.WriteLine("You have been shot! It is the end of your turn.");
     }

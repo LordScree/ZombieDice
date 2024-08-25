@@ -4,26 +4,12 @@ namespace LordScree.ZombieDice;
 
 public class StandardZombieDiceGame : IZombieDiceGame
 {
-    private List<IZombieDie> _zombieDice;
-    private DiceBag _bag;
+    private List<IZombieDie> Dice { get; set; } = [];
+    private DiceBag Bag { get; set; }
 
-    public List<PlayedDie> PlayedDice { get; private set; } = new List<PlayedDie>();
-
-    private List<IZombieDie> _currentHand = new List<IZombieDie>();
-
-    public int Brains { get; private set; }
-
-    public int Shotguns { get; private set; }
-
-    private DiceRoller _roller;
-
-    public bool EndTurn { get; set; } = false;
-
-    public StandardZombieDiceGame(DiceRoller roller)
+    public StandardZombieDiceGame()
     {
-        _roller = roller;
-
-        _zombieDice = [
+        Dice = [
             new GreenD6(),
             new GreenD6(),
             new GreenD6(),
@@ -39,103 +25,22 @@ public class StandardZombieDiceGame : IZombieDiceGame
             new RedD6()
         ];
 
-        _bag = new DiceBag(_zombieDice);
+        Bag = new DiceBag(Dice);
     }
 
     public void ResetDiceBag()
     {
-        _bag = new DiceBag(_zombieDice);
+        Bag = new DiceBag(Dice);
     }
 
-    public PlayedDie[] StartTurn()
+    public List<IZombieDie> GrabZombieDice(int howMany)
     {
-        EndTurn = false;
-        ResetDiceBag();
-        PlayedDice = new List<PlayedDie>();
-        _currentHand = _bag.GrabZombieDice(3);
-        var rollResult = RollHand();
-        CleanupCurrentHand();
-        return rollResult;
+        return Bag.GrabZombieDice(howMany);
     }
 
-    public PlayedDie[] GoAgain()
+    public IZombieDiceTurnHandler GetTurnHandler(DiceRoller roller)
     {
-        if (EndTurn) throw new TurnAlreadyOverException();
-
-        _currentHand.AddRange(_bag.GrabZombieDice(_currentHand.Count - 3));
-        var rollResult = RollHand();
-        CleanupCurrentHand();
-        return rollResult;
+        return new StandardZombieDiceTurnHandler(this, roller);
     }
 
-    public ZombieDieType[] InspectHand()
-    {
-        var result = new List<ZombieDieType>();
-        foreach (var die in _currentHand)
-        {
-            result.Add(die.GetZombieDieType());
-        }
-        return result.ToArray();
-    }
-
-    public ZombieDieType[] InspectPlayedDice()
-    {
-        var result = new List<ZombieDieType>();
-        foreach (var die in PlayedDice)
-        {
-            result.Add(die.Type);
-        }
-        return result.ToArray();
-    }
-
-    private PlayedDie[] RollHand()
-    {
-        if (EndTurn) throw new TurnAlreadyOverException();
-
-        var result = new List<PlayedDie>();
-
-        foreach (var die in _currentHand)
-        {
-            result.Add(ResolveRoll(die));
-        }
-
-        return result.ToArray();
-    }
-
-    private PlayedDie ResolveRoll(IZombieDie die)
-    {
-        var currentFace = _roller.Roll(die);
-
-        switch (currentFace)
-        {
-            case ZombieDieFace.Brain:
-                Brains++;
-                break;
-            case ZombieDieFace.Runner:
-                break;
-            case ZombieDieFace.Shotgun:
-                Shotguns++;
-                CheckForEndTurnCondition();
-                break;
-        }
-
-        var result = new PlayedDie(die.GetZombieDieType(), currentFace);
-        PlayedDice.Add(result);
-
-        return result;
-    }
-
-    private void CleanupCurrentHand()
-    {
-        _currentHand.RemoveAll(x => x.LastFace == ZombieDieFace.Brain || x.LastFace == ZombieDieFace.Shotgun);
-    }
-
-    private void CheckForEndTurnCondition()
-    {
-        if (Shotguns >= 3)
-        {
-            Brains = 0;
-            EndTurn = true;
-        }
-    }
 }
