@@ -6,6 +6,21 @@
     <RootNamespace>LordScree</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AssemblyName>LSZD</AssemblyName>
+    <ApplicationIcon>LSDZ.ico</ApplicationIcon>
+    <Title>LordScree's Zombie Dice</Title>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="LSDZ.ico" />
+  </ItemGroup>
 
 </Project>
